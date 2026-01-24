@@ -28,7 +28,7 @@ def generate_launch_description():
     # Launch arguments
     declare_node_name_cmd = DeclareLaunchArgument(
         'node_name',
-        default_value='ldlidar_node',
+        default_value='lidar_node',
         description='Name of the node'
     )
 
@@ -37,6 +37,7 @@ def generate_launch_description():
         package = 'ldlidar_node',
         executable = 'ldlidar_node',
         name = node_name,
+        namespace = "sensors",
         output='screen',
         parameters=[
             # YAML files
