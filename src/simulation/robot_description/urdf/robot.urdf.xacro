@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<robot name="tank_bot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ================================================= -->
+  <!--                    PROPERTIES                    -->
+  <!-- ================================================= -->
+  <xacro:property name="chassis_length" value="0.32"/>
+  <xacro:property name="chassis_width"  value="0.23"/>
+  <xacro:property name="chassis_height" value="0.12"/>
+
+  <xacro:property name="track_radius" value="0.045"/>
+  <xacro:property name="track_width"  value="0.05"/>
+  <xacro:property name="track_offset_y" value="0.09"/>
+  <xacro:property name="track_z" value="0.03"/>
+
+  <xacro:property name="base_mass" value="4.5"/>
+  <xacro:property name="track_mass" value="0.5"/>
+
+  <!-- ================================================= -->
+  <!--                  BASE FOOTPRINT                   -->
+  <!-- ================================================= -->
+  <link name="base_footprint">
+    <visual>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+      <material name="invisible">
+        <color rgba="0 0 0 0"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="base_footprint_to_base_link" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0"/>
+  </joint>
+
+  <!-- ================================================= -->
+  <!--                    BASE LINK                     -->
+  <!-- ================================================= -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 ${chassis_height/2}"/>
+      <geometry>
+        <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+      </geometry>
+      <material name="black">
+        <color rgba="0.1 0.1 0.1 1.0"/>
+      </material>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 ${chassis_height/2}"/>
+      <geometry>
+        <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 ${chassis_height/2}"/>
+      <mass value="${base_mass}"/>
+      <inertia
+        ixx="0.05"
+        iyy="0.09"
+        izz="0.11"
+        ixy="0"
+        ixz="0"
+        iyz="0"/>
+    </inertial>
+  </link>
+
+  <!-- ================================================= -->
+  <!--                 TRACK MACRO                      -->
+  <!-- ================================================= -->
+  <xacro:macro name="track" params="name y_offset">
+
+    <link name="${name}">
+      <visual>
+        <origin rpy="1.5708 0 0"/>
+        <geometry>
+          <cylinder radius="${track_radius}" length="${track_width}"/>
+        </geometry>
+        <material name="dark_grey">
+          <color rgba="0.25 0.25 0.25 1.0"/>
+        </material>
+      </visual>
+
+      <collision>
+        <origin rpy="1.5708 0 0"/>
+        <geometry>
+          <cylinder radius="${track_radius}" length="${track_width}"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <mass value="${track_mass}"/>
+        <inertia ixx="0.001" iyy="0.001" izz="0.001"
+                 ixy="0" ixz="0" iyz="0"/>
+      </inertial>
+    </link>
+
+    <joint name="${name}_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="${name}"/>
+      <origin xyz="0 ${y_offset} ${track_z}"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+
+  </xacro:macro>
+
+  <!-- ================================================= -->
+  <!--              INSTANTIATE TRACKS                  -->
+  <!-- ================================================= -->
+  <xacro:track name="left_track"  y_offset="${ track_offset_y}"/>
+  <xacro:track name="right_track" y_offset="${-track_offset_y}"/>
+
+  <!-- ================================================= -->
+  <!--                   GAZEBO PLUGINS                  -->
+  <!-- ================================================= -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros2_control.so">
+      <robotNamespace>/</robotNamespace>
+      <robotParam>robot_description</robotParam>
+    </plugin>
+
+    <plugin name="gazebo_ros_diff_drive" filename="libgazebo_ros_diff_drive.so">
+      <ros>
+        <namespace>/</namespace>
+        <argument>cmd_vel:=/cmd_vel</argument>
+      </ros>
+
+      <left_joint>left_track_joint</left_joint>
+      <right_joint>right_track_joint</right_joint>
+
+      <wheel_separation>0.18</wheel_separation>
+      <wheel_diameter>0.09</wheel_diameter>
+
+      <wheel_accel>1.0</wheel_accel>
+      <wheel_torque>5.0</wheel_torque>
+
+      <update_rate>50</update_rate>
+    </plugin>
+  </gazebo>
+
+</robot>

@@ -2,3 +2,6 @@ sudo apt install python3-numpy
 sudo apt install python3-opencv
 sudo apt install ros-jazzy-diagnostic-updater
 sudo apt install libudev-dev
+sudo apt install ros-jazzy-joint-state-*
+sudo apt install ros-jazzy-xacro
+sudo apt install ros-jazzy-ros-gz
