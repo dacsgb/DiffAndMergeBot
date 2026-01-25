@@ -1,0 +1,11 @@
+[Unit]
+Description=Micro-ROS Agent
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStart=/usr/bin/docker compose -f /home/legohead259/Documents/Projects/DiffAndMergeBot/docker-compose.yml run --rm micro-ros-agent
+
+[Install]
+WantedBy=default.target

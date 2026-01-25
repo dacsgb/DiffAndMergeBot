@@ -1,0 +1,32 @@
+FROM ros:jazzy AS ros-builder
+
+ARG DEBIAN_FRONTEND=noninteractive
+WORKDIR /ros_ws
+ENV ROS_WS="ros_ws"
+
+# Build micro-ros
+RUN . /opt/ros/$ROS_DISTRO/setup.sh \
+&&  git clone -b $ROS_DISTRO https://github.com/micro-ROS/micro_ros_msgs src/micro_ros_msgs \
+&&  git clone -b $ROS_DISTRO https://github.com/micro-ROS/micro-ROS-Agent src/micro-ROS-Agent \
+&&  colcon build \
+&&  rm -rf log/ build/ src/
+
+# Build application
+COPY src/ src/
+RUN . /opt/ros/$ROS_DISTRO/setup.sh \
+&&  colcon build \
+&&  rm -rf log/ build/ src/
+
+# Disable shared memory
+COPY disable_fastdds_shm.xml disable_fastdds_shm_localhost_only.xml /tmp/
+
+ENV RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+ENV MICROROS_DISABLE_SHM=1
+
+# Instantiate ROS shortcuts
+RUN echo ". /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
+RUN echo ". /$ROS_WS/install/setup.bash" >> ~/.bashrc
+
+# Setup entrypoint
+COPY ./micro-ros_entrypoint.sh /scripts/micro-ros_entrypoint.sh
+

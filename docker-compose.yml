@@ -1,0 +1,12 @@
+services:
+  dev:
+    image: legohead259/diff_merge_bot_ws:test
+    entrypoint: ["/bin/bash"]
+    volumes:
+      - ./src/:/ros_ws/src/
+  micro-ros-agent:
+    image: legohead259/diff_merge_bot_ws:test
+    entrypoint: ["/bin/sh", "/scripts/micro-ros_entrypoint.sh"]
+    command: [
+      "--help"
+    ]
