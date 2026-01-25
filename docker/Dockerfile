@@ -11,6 +11,12 @@ RUN . /opt/ros/$ROS_DISTRO/setup.sh \
 &&  colcon build \
 &&  rm -rf log/ build/ src/
 
+# Build application
+COPY src/ src/
+RUN . /opt/ros/$ROS_DISTRO/setup.sh \
+&&  colcon build \
+&&  rm -rf log/ build/ src/
+
 # Disable shared memory
 COPY disable_fastdds_shm.xml disable_fastdds_shm_localhost_only.xml /tmp/
 
