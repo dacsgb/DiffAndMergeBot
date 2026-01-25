@@ -1,0 +1,8 @@
+services:
+  micro-ros-agent:
+    image: legohead259/diff_merge_bot_ws:test
+    entrypoint: ["/bin/sh", "/scripts/micro-ros_entrypoint.sh"]
+    command: [
+      "--help"
+    ]
+    # entrypoint: /bin/bash
