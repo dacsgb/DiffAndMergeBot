@@ -1,5 +1,5 @@
 . "/opt/ros/$ROS_DISTRO/setup.sh"
-. "/ros_ws/install/local_setup.sh"
+. "/$ROS_WS/install/local_setup.sh"
 
 if [ "$MICROROS_DISABLE_SHM" = "1" ] ; then
     if [ "$ROS_LOCALHOST_ONLY" = "1" ] ; then
