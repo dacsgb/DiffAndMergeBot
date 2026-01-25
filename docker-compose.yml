@@ -1,9 +1,14 @@
 services:
   dev:
-    image: legohead259/diff_merge_bot_ws:test
+    container_name: diff-merge-bot-uros-dev
+    image: legohead259/diff_merge_bot_ws-dev:latest
     entrypoint: ["/bin/bash"]
     volumes:
       - ./src/:/ros_ws/src/
+      - ./firmware/:/ros_ws/firmware/
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+    #   - /dev/bus/usb/:/dev/bus/usb/
   micro-ros-agent:
     image: legohead259/diff_merge_bot_ws:test
     entrypoint: ["/bin/sh", "/scripts/micro-ros_entrypoint.sh"]

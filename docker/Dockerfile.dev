@@ -1,8 +1,13 @@
-FROM ros:jazzy AS ros-builder
+FROM ros:jazzy-ros-base AS ros-builder
 
 ARG DEBIAN_FRONTEND=noninteractive
 WORKDIR /ros_ws
 ENV ROS_WS="ros_ws"
+
+# Install required apt packages
+COPY ./required_apt_pkgs.txt /install/required_apt_pkgs.txt
+RUN sudo apt update && sudo apt upgrade -y \
+&&  xargs sudo apt -y install < /install/required_apt_pkgs.txt
 
 # Build micro-ros
 RUN . /opt/ros/$ROS_DISTRO/setup.sh \
