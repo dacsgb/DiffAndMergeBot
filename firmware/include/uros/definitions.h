@@ -14,6 +14,13 @@
 #include <micro_ros_utilities/type_utilities.h>
 #include <micro_ros_utilities/string_utilities.h>
 
+// ROS2 message definitions
+#include <std_msgs/msg/string.h>
+#include <std_msgs/msg/int32.h>
+
+using std_msg_string_t = std_msgs__msg__String;
+using std_msg_int32_t = std_msgs__msg__Int32;
+
 // Define macros for checking function success
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){ while(1); }} // Blocking
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){ }} // Non-blocking

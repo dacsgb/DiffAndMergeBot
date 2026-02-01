@@ -1,4 +1,8 @@
 #include "definitions.h"
+#include <rcl/logging.h>
+
+// TODO: Remove after testing
+#include <Arduino.h>
 
 typedef enum {
     INITIALIZING,
@@ -20,10 +24,13 @@ typedef enum {
 namespace uros {
 class Controller {
 public:
-    Controller();
+    Controller() { }
     ~Controller() { destroyEntities(); }
 
     bool begin();
+    void handleConnectionState();
+    bool createEntities();
+    void destroyEntities();
 
     void setLogLevel(controller_log_level_t level) { currentLogLevel = level; }
 
@@ -69,14 +76,7 @@ protected:
         // TODO
     }
 
-    virtual void handleConnectionState();
-    virtual bool createEntities() { return true; }
-    virtual void destroyEntities() {}
-
 private:
-    static Controller* instance_;
-    TaskHandle_t microRosTask;
-
     // ROS node configuration
     const char* publisherTopic="micro_ros_response";
     const char* subscriberTopic="micro_ros_name";
@@ -87,23 +87,20 @@ private:
     rcl_timer_t timer;
 
     // Message buffers
-    std_msgs__msg__String received_msg;
-    std_msgs__msg__String response_msg;
+    std_msg_string_t received_msg;
+    std_msg_string_t response_msg;
+    std_msgs__msg__Int32 msg;
     char received_buffer[50];
     char response_buffer[100];
 
     void _subscriptionCallback(const void* msgin);
     void _publishResponse();
+    void _timer_callback(rcl_timer_t*, int64_t);
+    
+    static Controller* instance_;
+    static void timer_callback(rcl_timer_t* timer, int64_t last_call_time) { instance_->_timer_callback(timer, last_call_time); }
 
-    static void _subscriptionCallbackStatic(const void* msgin) { instance_->_subscriptionCallback(msgin); }
-
-    static void microRosTaskCallbackStatic(void* pvParameters) {
-        for (;;) {
-            instance_->handleConnectionState();
-            vTaskDelay(pdMS_TO_TICKS(10));  // Yield to scheduler every 10 ms
-        }
-    }
+    // static void _subscriptionCallbackStatic(const void* msgin) { instance_->_subscriptionCallback(msgin); }
 };
-} // namespace uros
 
-extern Controller controllerUros;
+} // namespace uros
