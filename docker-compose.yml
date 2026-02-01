@@ -10,8 +10,12 @@ services:
       - /dev/ttyACM0:/dev/ttyACM0
     #   - /dev/bus/usb/:/dev/bus/usb/
   micro-ros-agent:
-    image: legohead259/diff_merge_bot_ws:test
-    entrypoint: ["/bin/sh", "/scripts/micro-ros_entrypoint.sh"]
+    image: microros/micro-ros-agent:jazzy
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+    # entrypoint: ["/bin/sh"]
     command: [
-      "--help"
+      # "--help"
+      "serial", "-b", "115200", "--dev", "/dev/ttyACM0",
+      "-v"
     ]
