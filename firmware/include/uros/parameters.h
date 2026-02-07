@@ -1,5 +1,4 @@
-#ifndef MICRO_ROS__PARAMETERS_H
-#define MICRO_ROS__PARAMETERS_H
+#pragma once
 
 #include "definitions.h"
 
@@ -115,4 +114,3 @@ void motorCurrentLimitChangeCallback(parameter_t* param);
 void motorVelocityLimitChangeCallback(parameter_t* param);
 
 } // namespace uros
-#endif // MICRO_ROS__PARAMETERS_H

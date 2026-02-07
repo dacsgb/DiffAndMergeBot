@@ -1,5 +1,4 @@
-#ifndef MICRO_ROS__DEFINITIONS_H
-#define MICRO_ROS__DEFINITIONS_H
+#pragma once
 
 #include <Arduino.h>
 
@@ -13,6 +12,7 @@
 #include <rclc_parameter/rclc_parameter.h>
 #include <micro_ros_utilities/type_utilities.h>
 #include <micro_ros_utilities/string_utilities.h>
+#include <rmw/qos_profiles.h>
 
 // ROS2 message definitions
 #include <std_msgs/msg/string.h>
@@ -31,6 +31,6 @@ using std_msg_int32_t = std_msgs__msg__Int32;
     static volatile int64_t init = -1; \
     if (init == -1) { init = uxr_millis();} \
     if (uxr_millis() - init > MS) { X; init = uxr_millis();} \
-} while (0)\
+} while (0) \
 
-#endif // MICRO_ROS__DEFINITIONS_H
+# define TEST 1

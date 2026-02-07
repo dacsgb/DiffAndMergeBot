@@ -1,14 +1,19 @@
-#include <Arduino.h>
-
-#include "uros/controller.h"
-
-uros::Controller controller;
+#include "uros/uros.h"
 
 void setup() {
     Serial.begin(115200);
+    Serial1.begin(115200);
     set_microros_serial_transports(Serial);
+
+    pubMsg1.data = 0;
+
+    ppub1.setTimerCallback(ppub1_callback);
+    ppub2.setTimerCallback(ppub2_callback);
+
     controller.begin();
-    pinMode(13, OUTPUT);
+
+    controller.addFunction(&ppub1);
+    // controller.addFunction(&ppub2);
 }
 
 void setup1() {
@@ -20,7 +25,7 @@ void setup1() {
  * Reserved for MicroROS since most USB/Serial transport is handled by Core 0
  */
 void loop() {    
-    controller.handleConnectionState();
+    controller.spin();
 }
 
 /**
