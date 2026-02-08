@@ -65,21 +65,20 @@ bool Node::createEntities() {
     RCCHECK(rclc_node_init_default(&node, "micro_ros_platformio_node", "", &support));
 
     // create executor
-    RCCHECK(rclc_executor_init(&executor, &support.context, 1, &allocator));
+    RCCHECK(rclc_executor_init(&executor, &support.context, functions.size(), &allocator));
 
     for (auto& func : functions) { // Iterate over all member functions and initialize
         if (!func) { // Null member found
             // TODO: Handle error with log message or similar
-            Serial1.println("Member function is null!");
             _success = false;
             continue;
         }
         rcl_ret_t ret = func->init();
         if (ret != RCL_RET_OK) {
-            Serial1.println("Failed to start a member function!");
+            Serial1.println("Function init failed!");
             return false;
         }
-        Serial1.println("Started a member function!");
+        Serial1.println("Function init succeeded");
     }
 
     return _success;

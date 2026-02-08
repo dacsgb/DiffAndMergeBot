@@ -6,14 +6,17 @@ void setup() {
     set_microros_serial_transports(Serial);
 
     pubMsg1.data = 0;
+    pubMsg2.data = 0;
 
     ppub1.setTimerCallback(ppub1_callback);
     ppub2.setTimerCallback(ppub2_callback);
+    sub1.setSubscriptionCallback(sub1_callback);
 
     controller.begin();
 
     controller.addFunction(&ppub1);
-    // controller.addFunction(&ppub2);
+    controller.addFunction(&ppub2);
+    controller.addFunction(&sub1);
 }
 
 void setup1() {
