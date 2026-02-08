@@ -12,6 +12,7 @@ void setup() {
     ppub2.setTimerCallback(ppub2_callback);
     sub1.setSubscriptionCallback(sub1_callback);
     service.setServiceCallback(service_callback);
+    client.setClientCallback(on_response_received);
 
     controller.begin();
 
@@ -19,6 +20,7 @@ void setup() {
     controller.addFunction(&ppub2);
     controller.addFunction(&sub1);
     controller.addFunction(&service);
+    controller.addFunction(&client);
 }
 
 void setup1() {

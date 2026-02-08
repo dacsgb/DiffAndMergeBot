@@ -1,9 +1,12 @@
+#pragma once
+
 #include "definitions.h"
 #include "node.h"
 #include "publisher.h"
 #include "periodic_publisher.h"
 #include "subscriber.hpp"
 #include "service.hpp"
+#include "client.hpp"
 
 using namespace uros;
 
@@ -74,4 +77,20 @@ void service_callback(const void* request_msg, void* response_msg) {
     Serial1.print((int) req_in->b);
     Serial1.println(".");
     res_in->sum = req_in->a + req_in->b;
+}
+
+// Client
+Client<add_two_ints_response_t> client(
+    controller.getNode(),
+    ROSIDL_GET_SRV_TYPE_SUPPORT(example_interfaces, srv, AddTwoInts),
+    "add_two_ints",
+    controller.getExecutor()
+);
+void on_response_received(const void* response_msg) {
+    // Cast message to expected type
+    add_two_ints_response_t* res_in = (add_two_ints_response_t *) response_msg;
+
+    // Handle response message
+    Serial1.print("Received service response: ");
+    Serial1.println(res_in->sum);
 }
