@@ -17,9 +17,12 @@
 // ROS2 message definitions
 #include <std_msgs/msg/string.h>
 #include <std_msgs/msg/int32.h>
+#include <example_interfaces/srv/add_two_ints.h>
 
 using std_msg_string_t = std_msgs__msg__String;
 using std_msg_int32_t = std_msgs__msg__Int32;
+using add_two_ints_request_t = example_interfaces__srv__AddTwoInts_Request;
+using add_two_ints_response_t = example_interfaces__srv__AddTwoInts_Response;
 
 // Define macros for checking function success
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){ while(1); }} // Blocking

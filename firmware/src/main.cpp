@@ -11,12 +11,14 @@ void setup() {
     ppub1.setTimerCallback(ppub1_callback);
     ppub2.setTimerCallback(ppub2_callback);
     sub1.setSubscriptionCallback(sub1_callback);
+    service.setServiceCallback(service_callback);
 
     controller.begin();
 
     controller.addFunction(&ppub1);
     controller.addFunction(&ppub2);
     controller.addFunction(&sub1);
+    controller.addFunction(&service);
 }
 
 void setup1() {
