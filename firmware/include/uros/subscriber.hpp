@@ -20,7 +20,7 @@ public:
             typeSupport_(typeSupport),
             topicName_(topicName),
             executor_(executor),
-            invocation_(invocation)
+            invocation_(invocation),
             MemberFunction(qosProfile) {
     
         // Check node, type support, and topic name are not nullptrs
@@ -31,7 +31,7 @@ public:
     
     ~Subscriber() { RCLC_UNUSED(fini()); }
     
-    void setSubscriptionCallback(rclc_subscription_callback_with_context_t cb) { cb_ = cb; }
+    void setSubscriptionCallback(rclc_subscription_callback_t cb) { cb_ = cb; }
 
 protected:
     rcl_subscription_t subscription_;
@@ -68,9 +68,7 @@ protected:
         return rc;
     }
 
-    rcl_ret_t fini() override {
-        return rcl_subscription_fini(&subscription_, node_);
-    };
+    rcl_ret_t fini() override { return rcl_subscription_fini(&subscription_, node_); }
 
 private:
     rclc_subscription_callback_t cb_;
