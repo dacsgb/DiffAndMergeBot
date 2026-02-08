@@ -83,7 +83,7 @@ void service_callback(const void* request_msg, void* response_msg) {
 Client<add_two_ints_response_t> client(
     controller.getNode(),
     ROSIDL_GET_SRV_TYPE_SUPPORT(example_interfaces, srv, AddTwoInts),
-    "add_two_ints",
+    "uros_client_test_service",
     controller.getExecutor()
 );
 void on_response_received(const void* response_msg) {
