@@ -22,7 +22,6 @@ protected:
     rcl_node_t* node_;
     const rosidl_message_type_support_t* typeSupport_;
     const char* topicName_;
-    // const rmw_qos_profile_t* qosProfile_;
 
     rcl_ret_t init() override;
     rcl_ret_t fini() override;

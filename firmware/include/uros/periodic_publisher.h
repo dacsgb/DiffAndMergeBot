@@ -4,8 +4,6 @@
 
 namespace uros {
 
-using timer_callback_t = std::function<void(rcl_timer_t*, int64_t)>;
-
 class PeriodicPublisher : public Publisher {
 public:
     PeriodicPublisher(
