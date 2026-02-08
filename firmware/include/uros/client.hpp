@@ -27,10 +27,7 @@ public:
         assert(serviceName_);
     }
 
-    ~Client() { 
-        RCLC_UNUSED(fini()); 
-        isInitialized_ = false;
-    }
+    ~Client() { RCLC_UNUSED(fini()); }
 
     rcl_ret_t sendRequest(const void* req_msg, int64_t* seq_number) { return rcl_send_request(&client_, req_msg, seq_number); }
 
@@ -65,10 +62,7 @@ protected:
         if (rc != RCL_RET_OK) {
             // TODO: Handle error
             return rc; // Exit function
-        }
-
-        isInitialized_ = true;
-        
+        }        
         return rc;
     }
 
