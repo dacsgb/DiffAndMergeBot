@@ -1,0 +1,3 @@
+[submodule "firmware/lib/uros"]
+	path = firmware/lib/uros
+	url = https://github.com/Legohead259/uros-cpp
